@@ -1,0 +1,21 @@
+group = "de.koalaworks.wcts"
+version "0.0.1-SNAPSHOT"
+
+apply plugin: "distribution"
+apply plugin: "maven-publish"
+
+distributions {
+    main {
+        contents {
+            from "Dockerfile", "package.json", "server.js"
+        }
+    }
+}
+
+publishing {
+    publications {
+        tar(MavenPublication ) {
+            artifact distTar
+        }
+    }
+}
