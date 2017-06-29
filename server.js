@@ -12,11 +12,13 @@ const headEndReplacement =
 
 const bodyEndReplacement =
     '<script>' +
+        'Annotator.Plugin&&(Annotator.Plugin.WCTS=function(e){return{pluginInit:function(){function e(e,n){if(n.referenceType){e.innerHTML="";var t=document.createElement("div");e.appendChild(t);var a=document.createElement("label");a.innerHTML="Reference Type: ",t.appendChild(a);for(var r=document.createElement("select"),l=1;l<=3;l++){var i=document.createElement("option");i.value="type"+l,i.text="Type "+l,r.add(i)}n.referenceType&&(r.value=n.referenceType),t.appendChild(r)}}this.annotator.viewer.addField({label:"Reference Type",load:e}),this.annotator.editor.addField({label:"Reference Type",load:e,submit:function(e,n){n.referenceType=e.getElementsByTagName("select")[0].value}})}}});' +
         'jQuery(function ($) {' +
             'let annotator = $(document.body).annotator().data("annotator");' +
             'annotator' +
             '    .addPlugin("Store", { prefix: "http://localhost:52629" })' +
-            '    .addPlugin("Permissions", { user: "editor", permissions: { "admin": ["technicalUser"] }});' +
+            '    .addPlugin("Permissions", { user: "editor", permissions: { "admin": ["technicalUser"] }})' +
+            '    .addPlugin("WCTS");' +
         '});' +
     '</script>' +
     '</body>';
