@@ -12,7 +12,7 @@ const headEndReplacement =
 
 const bodyEndReplacement =
     '<script>' +
-        '"use strict";Annotator.Plugin&&(Annotator.Plugin.WCTS=function(e){return{pluginInit:function(){function e(e,n){if(n.referenceType){e.innerHTML="";var t=document.createElement("div");e.appendChild(t);var a=document.createElement("label");a.innerHTML="Reference Type: ",t.appendChild(a);var r=document.createElement("select"),i=document.createElement("option");i.value="AdditionalInformation",i.text="Additional Information",r.add(i);for(var o=1;o<=3;o++){var l=document.createElement("option");l.value="type"+o,l.text="Type "+o,r.add(l)}n.referenceType&&(r.value=n.referenceType),t.appendChild(r)}}this.annotator.viewer.addField({label:"Reference Type",load:e}),this.annotator.editor.addField({label:"Reference Type",load:e,submit:function(e,n){n.referenceType=e.getElementsByTagName("select")[0].value}})}}});' +
+        'Annotator.Plugin&&(Annotator.Plugin.WCTS=function(e){return{pluginInit:function(){function e(e,n){if(n.referenceType){e.innerHTML="";var t=document.createElement("div");e.appendChild(t);var a=document.createElement("label");a.innerHTML="Reference Type: ",t.appendChild(a);var r=document.createElement("select"),l=document.createElement("option");l.value="NewsDetailPage",l.text="News Detail Page",r.add(l);for(var i=1;i<=3;i++){var c=document.createElement("option");c.value="type"+i,c.text="Type "+i,r.add(c)}n.referenceType&&(r.value=n.referenceType),t.appendChild(r)}}this.annotator.editor.addField({label:"Reference Type",load:e,submit:function(e,n){n.referenceType=e.getElementsByTagName("select")[0].value}})}}});' +
         'jQuery(function ($) {' +
             'let annotator = $(document.body).annotator().data("annotator");' +
             'annotator' +
