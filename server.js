@@ -10,18 +10,25 @@ const headEndReplacement =
     '<link rel="stylesheet" href="http://assets.annotateit.org/annotator/v1.1.0/annotator.min.css">' +
     '</head>';
 
-const bodyEndReplacement =
-    '<script>' +
-        '"use strict";Annotator.Plugin&&(Annotator.Plugin.WCTS=function(e){return{pluginInit:function(){function e(e,n){if(n.referenceType){e.innerHTML="";var t=document.createElement("div");e.appendChild(t);var a=document.createElement("label");a.innerHTML="Reference Type: ",t.appendChild(a);var r=document.createElement("select"),l=document.createElement("option");l.value="NewsDetailPage",l.text="News Detail Page",r.add(l);for(var i=1;i<=3;i++){var d=document.createElement("option");d.value="type"+i,d.text="Type "+i,r.add(d)}n.referenceType&&(r.value=n.referenceType),t.appendChild(r)}}this.annotator.viewer.addField({label:"Reference Type",load:e}),this.annotator.editor.addField({label:"Reference Type",load:e,submit:function(e,n){n.referenceType=e.getElementsByTagName("select")[0].value}})}}});' +
-        'jQuery(function ($) {' +
-            'let annotator = $(document.body).annotator().data("annotator");' +
-            'annotator' +
-            '    .addPlugin("Store", { prefix: "http://localhost:52629" })' +
-            '    .addPlugin("Permissions", { user: "editor", permissions: { "admin": ["technicalUser"] }})' +
-            '    .addPlugin("WCTS");' +
-        '});' +
-    '</script>' +
-    '</body>';
+const bodyEndReplacement = url => {
+    return `
+<script>
+// "use strict";Annotator.Plugin&&(Annotator.Plugin.WCTS=function(e){return{pluginInit:function(){function e(e,n){if(n.referenceType){e.innerHTML="";var t=document.createElement("div");e.appendChild(t);var a=document.createElement("label");a.innerHTML="Reference Type: ",t.appendChild(a);var r=document.createElement("select"),l=document.createElement("option");l.value="NewsDetailPage",l.text="News Detail Page",r.add(l);for(var i=1;i<=3;i++){var d=document.createElement("option");d.value="type"+i,d.text="Type "+i,r.add(d)}n.referenceType&&(r.value=n.referenceType),t.appendChild(r)}}this.annotator.viewer.addField({label:"Reference Type",load:e}),this.annotator.editor.addField({label:"Reference Type",load:e,submit:function(e,n){n.referenceType=e.getElementsByTagName("select")[0].value}})}}});
+jQuery(function ($) {
+    const annotator = $(document.body).annotator().data("annotator");
+    const encodedUrl = encodeURIComponent("${url}");
+    annotator
+        .addPlugin("Store", {
+            prefix: "http://localhost:16612/pages/" + encodedUrl
+        })
+        .addPlugin("Permissions", { user: "editor", permissions: { "admin": ["technicalUser"] }})
+        //.addPlugin("WCTS")
+        ;
+});
+</script>
+</body>
+`;
+};
 
 app.get("/", (request, response) => {
     let getPromise = new Promise((resolve, reject) => {
@@ -38,7 +45,7 @@ app.get("/", (request, response) => {
 
     getPromise.then(body => {
         let fixedBody = body.replace("</head>", headEndReplacement)
-            .replace("</body>", bodyEndReplacement);
+            .replace("</body>", bodyEndReplacement(request.query.url));
 
         response.status(200).send(fixedBody);
     }, error => {
