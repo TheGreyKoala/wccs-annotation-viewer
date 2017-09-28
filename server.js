@@ -5,10 +5,22 @@ const unirest = require('unirest');
 
 const app = express();
 
-const headEndReplacement =
-    '<script src="http://assets.annotateit.org/annotator/v1.1.0/annotator-full.min.js"></script>' +
-    '<link rel="stylesheet" href="http://assets.annotateit.org/annotator/v1.1.0/annotator.min.css">' +
-    '</head>';
+const headEndReplacement = `<script src="http://localhost:29136/js/annotator-full.js"></script>
+    <link rel="stylesheet" href="http://assets.annotateit.org/annotator/v1.1.0/annotator.min.css">
+    <style>
+        span.annotator-hl {
+            width: initial !important;
+            height: initial !important;
+            display: initial !important;
+            position: initial !important;
+            left: initial !important;
+            top: initial !important;
+            margin-right: initial !important;
+            margin-left: initial !important;
+            background: rgba(255,255,10,0.3) !important;        
+        }
+    </style>
+    </head>`;
 
 const bodyEndReplacement = url => {
     return `
@@ -52,6 +64,8 @@ app.get("/", (request, response) => {
         response.status(error.status).send(error.body);
     });
 });
+
+app.use(express.static("public"));
 
 app.listen(29136, function () {
     console.log("Annotation proxy service started...");
