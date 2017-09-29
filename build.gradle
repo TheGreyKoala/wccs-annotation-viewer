@@ -7,6 +7,9 @@ apply plugin: "maven-publish"
 distributions {
     main {
         contents {
+            into ("public") {
+                from "public"
+            }
             from "Dockerfile", "package.json", "server.js"
         }
     }
