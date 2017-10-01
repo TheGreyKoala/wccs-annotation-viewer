@@ -88,8 +88,10 @@ if (Annotator.Plugin) {
                     label: "Class",
                     load: (field, annotation) => classFieldLoad(field, annotation, true),
                     submit: function (field, annotation) {
-                        console.log("In submit");
-                        annotation.referenceType = field.getElementsByTagName("select")[0].value;
+                        console.debug("Submitting annotation.");
+                        if (annotation.wccs) {
+                            annotation.wccs.class = field.querySelector("select").value;
+                        }
                     }
                 });
             }
