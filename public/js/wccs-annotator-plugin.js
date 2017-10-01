@@ -4,53 +4,85 @@ if (Annotator.Plugin) {
     console.log("Annotator.Plugin found");
     Annotator.Plugin.wccs = function (element) {
         console.log("Registering WCCS Plugin");
+        let contentClasses = [];
+        let referenceClasses = [];
+
+        function requestContentClasses() {
+            console.debug("Requesting content classes.");
+            jQuery.ajax("http://localhost:44284/content-classes", {
+                "success": (data) => {
+                    console.debug("Successfully requested content classes.");
+                    contentClasses = data.classes;
+                },
+                "error": (jqXHR, textStatus, error) => {
+                    console.error(`Requesting content classes failed: textStatus=${textStatus}, errorThrown=${error}`);
+                }
+            });
+        }
+
+        function requestReferenceClasses() {
+            console.debug("Requesting reference classes.");
+            jQuery.ajax("http://localhost:44284/reference-classes", {
+                "success": (data) => {
+                    console.debug("Successfully requested reference classes.");
+                    referenceClasses = data.classes;
+                },
+                "error": (jqXHR, textStatus, error) => {
+                    console.error(`Requesting reference classes failed: textStatus=${textStatus}, errorThrown=${error}`);
+                }
+            });
+        }
+
+        requestContentClasses();
+        requestReferenceClasses();
+
         return {
             pluginInit: function () {
                 function classFieldLoad(field, annotation, editMode) {
-                    console.log("In pluginInid");
+                    console.debug("Loading WCCS plugin field.");
                     if (annotation.wccs.featureKind) {
                         field.innerHTML = "";
 
-                        let container = document.createElement("div");
+                        const container = document.createElement("div");
                         container.style.padding = "12px 8px";
 
-                        let label = document.createElement("label");
+                        const label = document.createElement("label");
                         label.innerHTML = "Class:";
                         label.style.color = "#3c3c3c";
 
-                        let select = document.createElement("select");
-                        let newsDetailPageOption = document.createElement("option");
-                        newsDetailPageOption.value = "NewsDetailPage";
-                        newsDetailPageOption.text = "News Detail Page";
-                        select.add(newsDetailPageOption);
-                        select.style.color = "#3c3c3c";
-
-                        for (let i = 1; i <= 3; i++) {
-                            let option = document.createElement("option");
-                            option.value = "type" + i;
-                            option.text = "Type " + i;
-                            option.style.color = "#3c3c3c";
-                            select.add(option);
-                        }
-
-                        select.value = annotation.wccs.class;
-
                         if (editMode) {
+                            const select = document.createElement("select");
+                            select.style.color = "#3c3c3c";
+
+                            const classes = annotation.wccs.featureKind === "property" ? contentClasses : referenceClasses;
+                            classes.forEach(aClass => {
+                                const option = document.createElement("option");
+                                option.value = aClass.name;
+                                option.text = aClass.name;
+                                option.style.color = "#3c3c3c";
+                                select.add(option);
+                            });
+
+                            select.value = annotation.wccs.class;
+
                             field.appendChild(container);
                             container.appendChild(label);
                             container.appendChild(select);
                             select.style.width = "80%";
                             select.style.marginLeft = "10px";
                         } else {
+                            const span = document.createElement("span");
+                            span.innerText = annotation.wccs.class;
+                            span.style.color = "#3c3c3c";
                             field.appendChild(label);
-                            field.appendChild(select);
+                            field.appendChild(span);
                             label.style.width = "15%";
-                            select.style.width = "85%";
+                            span.style.width = "85%";
                         }
                     }
                 }
 
-                console.log("In pluginInit");
+                console.log("Initializing plugin.");
                 this.annotator.viewer.addField({label: "Class", load: (field, annotation) => classFieldLoad(field, annotation, false)});
                 this.annotator.editor.addField({
                     label: "Class",
