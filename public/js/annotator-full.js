@@ -782,12 +782,12 @@
         }
         length = 0;
 
-        if (p === "end") {
+        //if (p === "end") {
             // WCCS Adjustment
-            targetOffset = node.textContent.trim().length;
-        } else {
+        //    targetOffset = node.textContent.trim().length;
+        //} else {
             targetOffset = this[p + 'Offset'];
-        }
+        //}
         
         if (p === 'end') {
           targetOffset--;
