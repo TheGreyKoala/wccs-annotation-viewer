@@ -1,14 +1,33 @@
-group = "de.koalaworks.wcts"
-version "0.0.1-SNAPSHOT"
+group = "de.koalaworks.wccs"
+version "1.0.0"
 
 apply plugin: "distribution"
 apply plugin: "maven-publish"
 
+repositories {
+    mavenLocal()
+}
+
+configurations {
+    libs
+}
+
+dependencies {
+    libs "de.koalaworks.wccs:wccs-annotator-plugin:1.0.0"
+}
+
+task extractLibs(type: Copy) {
+    from {
+        configurations.libs.collect { tarTree(it) }
+    }
+    into "$buildDir/libs"
+}
+
 distributions {
     main {
         contents {
-            into ("public") {
-                from "public"
+            into ("public/js") {
+                from extractLibs
             }
             from "Dockerfile", "package.json", "server.js"
         }

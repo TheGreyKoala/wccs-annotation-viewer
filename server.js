@@ -5,8 +5,8 @@ const unirest = require('unirest');
 
 const app = express();
 
-const headEndReplacement = `<script src="http://localhost:29136/js/annotator-full.js"></script>
-    <script src="http://localhost:29136/js/wccs-annotator-plugin.js"></script>
+const headEndReplacement = `<script src="http://assets.annotateit.org/annotator/v1.2.10/annotator-full.js"></script>
+    <script src="http://localhost:29136/js/wccs-annotator-plugin-1.0.0/wccs-annotator-plugin.js"></script>
     <link rel="stylesheet" href="http://assets.annotateit.org/annotator/v1.1.0/annotator.min.css">
     <style>
         span.annotator-hl {
