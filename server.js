@@ -34,7 +34,7 @@ jQuery(function ($) {
             prefix: "http://localhost:16612/pages/" + encodedUrl
         })
         .addPlugin("wccs")
-        .addPlugin("Permissions", { user: "editor", permissions: { "admin": ["wccs"] }});
+        .addPlugin("Permissions", { user: "editor", permissions: { "admin": ["wccs"], "delete": ["wccs"] }});
 });
 </script>
 </body>
