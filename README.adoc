@@ -1,1 +1,5 @@
-= Annotation Viewer
+= WCCS Annotation Viewer
+
+This service is a reverse proxy for web pages.
+It adds the https://github.com/TheGreyKoala/wccs-annotator-plugin[WCCS Annotator Plugin] to web pages, which is handy during the development of the reference implementation of the Web Content Classification System.
+See my https://github.com/TheGreyKoala/masters-thesis[master's thesis] for more information about this system.
